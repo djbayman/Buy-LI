@@ -1321,7 +1321,7 @@ body {
   width: 125px;
 }
 .cart .container li.name-pr {
-  width: 220px;
+  min-width: 220px;
 }
 .cart .container .row-body i {
   text-align: center;
