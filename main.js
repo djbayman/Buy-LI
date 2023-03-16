@@ -47,19 +47,43 @@ switch (page) {
 
     // click on the button event
     btnCart.addEventListener("click", () => {
-      // if the storage empty get an empty array if not get the array
+      // if the storage empty get an empty array if not get the product array
       var productList = JSON.parse(localStorage.getItem("productList") || "[]");
       // check if the user select quantity more than zero
       if (quantProduct.value > 0) {
         // object has the src and the quantity when the user click on the btn push the object in the array
         let newProduct = {
-          src: window.localStorage.getItem("src"),
+          src: mainImg.getAttribute("src"),
           quantProduct: quantProduct.value,
         };
         // push the info of product into product array
         productList.push(newProduct);
         // store the product array into local
         window.localStorage.setItem("productList", JSON.stringify(productList));
+        //
+        // popup section
+        // popup div
+        let popupUser = document.createElement("div");
+        popupUser.className = "popup-user";
+        //popup icon
+        let popupIcon = document.createElement("i");
+        popupIcon.className = "fa-sharp fa-regular fa-circle-check";
+        // popup content
+        let popupMsg = document.createElement("p");
+        popupMsg.className = "popupMsg";
+        popupMsg.innerHTML = "You Have Succesfully Add To The Cart";
+        // append
+        popupUser.appendChild(popupIcon);
+        popupUser.appendChild(popupMsg);
+        document.body.appendChild(popupUser);
+        //
+        setTimeout(() => {
+          popupUser.style.left = "20px";
+        }, 1500);
+        //
+        setTimeout(() => {
+          popupUser.style.left = "-442px";
+        }, 3000);
       }
     });
     break;
@@ -68,15 +92,15 @@ switch (page) {
     /***************************** */
     // function that control the cart page
     function productCrt() {
-      // cart page
+      //  if the storage empty get an empty array if not get the product array
       var productList = JSON.parse(localStorage.getItem("productList") || "[]");
       // select all rows
       let rowT = document.querySelectorAll(".cart .container .row");
       // cleat the row
       rowT[1].innerHTML = "";
-      //
+      //go through the product array
       for (let i = 0; i < productList.length; i++) {
-        //
+        // each product
         var product = productList[i];
         // create elements
         // column 1
@@ -92,10 +116,8 @@ switch (page) {
         let priceProduct = document.createElement("p");
         priceProduct.innerHTML = "$98.00";
         // column 5
-        let quantitySelected = document.createElement("input");
-        quantitySelected.setAttribute("type", "number");
-        quantitySelected.setAttribute("min", "0");
-        quantitySelected.setAttribute("value", product.quantProduct);
+        let quantitySelected = document.createElement("p");
+        quantitySelected.innerHTML = product.quantProduct;
         // column 6
         let subtotal = document.createElement("p");
         subtotal.innerHTML =
@@ -130,35 +152,59 @@ switch (page) {
         ul.appendChild(liFive);
         //appand ul to the div row 2
         rowT[1].appendChild(ul);
-        // remove the product
-        document.querySelectorAll(".fa-ban").forEach((icon, index) => {
-          /**** that's the bug
-           * *** when i click on remove button
-           * **** the array in the local storage delet
-           * ***** but when the array stay in it two element (product)
-           * ******* they dont deleted
-           * ********* so when i reload the page it appears
-           * **************************************** */
-          icon.onclick = (e) => {
-            // remove the ul
-            e.target.parentElement.parentElement.remove();
-            //delet from the array the info of the product from the local
+      }
+      // call the remove function
+      remove();
+      // the user he hasn't select yet
+      if (rowT[1].innerHTML === "") {
+        let nothingSelected = document.createElement("div");
+        nothingSelected.className = "nothing-selected";
+        let paragaphNothing = document.createElement("p");
+        paragaphNothing.className = "paragaph-selected";
+        paragaphNothing.innerHTML = "You Don't Select Any Product";
+        nothingSelected.appendChild(paragaphNothing);
+        rowT[1].appendChild(nothingSelected);
+      }
+    }
+    productCrt();
+
+    // rmove function
+    function remove() {
+      //  if the storage empty get an empty array if not get the product array
+      let productList = JSON.parse(
+        window.localStorage.getItem("productList") || "[]"
+      );
+      // select all the icans remove
+      let icons = document.querySelectorAll(".fa-ban");
+      // go through the product array
+      for (var i = 0; i < productList.length; i++) {
+        // catch product one by one
+        let product = productList[i];
+        // click event on the icon
+        icons[i].addEventListener("click", (e) => {
+          // find the index of the product that i have click on it
+          let index = productList.indexOf(product);
+          // if the product exict removet from the array
+          if (index != -1) {
             productList.splice(index, 1);
-            // set on the storge the new array
+            // SET in the local the new value of the product array
             window.localStorage.setItem(
               "productList",
               JSON.stringify(productList)
             );
-          };
+            // remove the ul (the holder of the row)
+            e.target.parentNode.parentNode.remove();
+          }
         });
       }
     }
-    productCrt();
+
     // if the storage change call the productCrt function
     window.addEventListener("storage", function (event) {
       if (event.key === "productList") {
         productCrt();
       }
     });
+
     break;
 }
