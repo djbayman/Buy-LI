@@ -77,13 +77,13 @@ switch (page) {
         popupUser.appendChild(popupMsg);
         document.body.appendChild(popupUser);
         //
-        setTimeout(() => {
-          popupUser.style.left = "20px";
-        }, 1500);
-        //
-        setTimeout(() => {
-          popupUser.style.left = "-442px";
-        }, 3000);
+        // setTimeout(() => {
+        //   popupUser.style.left = "20px";
+        // }, 1500);
+        // //
+        // setTimeout(() => {
+        //   popupUser.style.left = "-442px";
+        // }, 3000);
       }
     });
     break;
@@ -153,23 +153,42 @@ switch (page) {
         //appand ul to the div row 2
         rowT[1].appendChild(ul);
       }
+
       // call the remove function
       remove();
-      // the user he hasn't select yet
+      //
+      // here the message id appear when the user hasn't select yet
       if (rowT[1].innerHTML === "") {
+        // create div
         let nothingSelected = document.createElement("div");
         nothingSelected.className = "nothing-selected";
+        // create p
         let paragaphNothing = document.createElement("p");
         paragaphNothing.className = "paragaph-selected";
-        paragaphNothing.innerHTML = "You Don't Select Any Product";
+        paragaphNothing.innerHTML = "You Don't Select Any Product Yet";
+        // appande to the div then to the row
         nothingSelected.appendChild(paragaphNothing);
         rowT[1].appendChild(nothingSelected);
       }
     }
     productCrt();
 
-    // rmove function
+    // remove function
     function remove() {
+      // select all rows
+      let rowT = document.querySelectorAll(".cart .container .row");
+      /*************coupon section******** */
+      // select the subtotal of the cart
+      let cartSubtotal = document.querySelector(
+        ".coupon .container .total ul .money"
+      );
+      // select the total
+      let total = document.querySelector(
+        ".coupon .container .total ul .fin-tot-mon"
+      );
+      // create an array to push insid it the quantiti that the user selected
+      let cartSubtotalQuant = [];
+      /*************the remove function start here******** */
       //  if the storage empty get an empty array if not get the product array
       let productList = JSON.parse(
         window.localStorage.getItem("productList") || "[]"
@@ -177,9 +196,19 @@ switch (page) {
       // select all the icans remove
       let icons = document.querySelectorAll(".fa-ban");
       // go through the product array
-      for (var i = 0; i < productList.length; i++) {
+      for (let i = 0; i < productList.length; i++) {
         // catch product one by one
         let product = productList[i];
+        // push insid the array the quantity that the user selected
+        cartSubtotalQuant.push(parseInt(product.quantProduct));
+        // add all the quantity
+        let reduceCartSubtotalQuant = cartSubtotalQuant.reduce((el, ne) => {
+          return el + ne;
+        });
+        // display the result in the page
+        cartSubtotal.innerHTML = `$${reduceCartSubtotalQuant * 98}.00`;
+        total.innerHTML = `$${reduceCartSubtotalQuant * 98}.00`;
+        //
         // click event on the icon
         icons[i].addEventListener("click", (e) => {
           // find the index of the product that i have click on it
@@ -194,6 +223,36 @@ switch (page) {
             );
             // remove the ul (the holder of the row)
             e.target.parentNode.parentNode.remove();
+            //
+            // remove from the array of quantity the number of the product that i have deleted
+            cartSubtotalQuant.splice(index, 1);
+            // reduce the new array (becaus i delet a product or more)
+            if (cartSubtotalQuant.length > 0) {
+              reduceCartSubtotalQuant = cartSubtotalQuant.reduce((el, ne) => {
+                return el + ne;
+              });
+              // display again the new resault
+              cartSubtotal.innerHTML = `$${reduceCartSubtotalQuant * 98}.00`;
+              total.innerHTML = `$${reduceCartSubtotalQuant * 98}.00`;
+              // if the length of the array equal to zero display 0
+            } else if (cartSubtotalQuant.length == 0) {
+              cartSubtotal.innerHTML = "0";
+              total.innerHTML = "0";
+              //
+              // here the message is sent when the user delet all the product in the cart
+              if (rowT[1].innerHTML === "") {
+                // create div
+                let nothingSelected = document.createElement("div");
+                nothingSelected.className = "nothing-selected";
+                // create p
+                let paragaphNothing = document.createElement("p");
+                paragaphNothing.className = "paragaph-selected";
+                paragaphNothing.innerHTML = "You Don't Select Any Product Yet";
+                // appande to the div then to the row
+                nothingSelected.appendChild(paragaphNothing);
+                rowT[1].appendChild(nothingSelected);
+              }
+            }
           }
         });
       }

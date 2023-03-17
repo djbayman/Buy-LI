@@ -166,6 +166,7 @@ body .popup-user .fa-circle-check {
   height: 98.5vh;
   padding-top: 8px;
 }
+
 @media (max-width: 767px) {
   .landing {
     height: 70.5vh;
@@ -189,37 +190,40 @@ body .popup-user .fa-circle-check {
 }
 @media (min-width: 992px) {
   .landing .container .image {
-    top: 180px;
+    top: 24px;
   }
 }
 @media (min-width: 768px) and (max-width: 991px) {
+  .landing {
+    height: 53.5vh;
+  }
   .landing .container {
     flex-direction: column;
   }
   .landing .container .text {
-    flex: 1;
+    flex: 1 1 0%;
     position: absolute;
     z-index: 1;
     top: 24%;
-    color: #ffffff;
+    color: rgb(255, 255, 255);
+    left: 17.5%;
   }
   .landing .container .image {
-    top: 175px;
+    top: 24px;
   }
 }
 @media (max-width: 767px) {
   .heading .container {
     flex-direction: column;
+    height: 100%;
   }
-  .landing .container {
-    flex-direction: column;
-  }
+
   .landing .container .text {
-    flex: 1;
     position: absolute;
     z-index: 1;
-    top: 24%;
-    color: #ffffff;
+    top: 30%;
+    color: rgb(255, 255, 255);
+    left: 12%;
   }
   .landing .container .text h2 {
     color: #009688;
@@ -672,7 +676,7 @@ body .popup-user .fa-circle-check {
 /**/
 @media (max-width: 767px) {
   .pannel .container {
-    margin: 10px 20px;
+    margin: 10px 30px;
   }
   /* .pannel .container .p-sec {
     grid-column: span 8;
@@ -1024,8 +1028,8 @@ body .popup-user .fa-circle-check {
     max-width: 430px;
   }
   .blog-sec .container .blog-img img {
-    width: 95%;
-    margin: 0 2.5%;
+    width: 85%;
+    margin: 0 7.5%;
   }
 }
 @media (max-width: 686px) {
@@ -1338,6 +1342,7 @@ body .popup-user .fa-circle-check {
   font-style: italic;
   font-size: 18px;
 }
+
 .cart .container .row-body {
   display: flex;
   justify-content: space-between;
@@ -1446,6 +1451,11 @@ body .popup-user .fa-circle-check {
   padding: 7px 5px;
   border: 1px solid #ddd;
   color: #333333b8;
+  font-size: 17px;
+  padding: 7px 5px;
+  border: 1px solid #ddd;
+  color: #333333b8;
+  height: calc(100% / 3);
 }
 .coupon .container .total ul li.final-total {
   color: #333;
