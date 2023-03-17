@@ -77,13 +77,13 @@ switch (page) {
         popupUser.appendChild(popupMsg);
         document.body.appendChild(popupUser);
         //
-        // setTimeout(() => {
-        //   popupUser.style.left = "20px";
-        // }, 1500);
-        // //
-        // setTimeout(() => {
-        //   popupUser.style.left = "-442px";
-        // }, 3000);
+        setTimeout(() => {
+          popupUser.style.left = "20px";
+        }, 1500);
+        //
+        setTimeout(() => {
+          popupUser.style.left = "-442px";
+        }, 3000);
       }
     });
     break;
